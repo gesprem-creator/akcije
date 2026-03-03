@@ -240,6 +240,39 @@ function StockDetailModal({ stock, isOpen, onClose }: {
     '5Y': '60M'
   }
 
+  // Map symbols to their correct exchanges
+  const getTradingViewSymbol = (symbol: string): string => {
+    // Known NYSE stocks
+    const nyseStocks = ['NKE', 'KO', 'WMT', 'JPM', 'V', 'MA', 'DIS', 'MCD', 'GS', 'IBM', 'CAT', 'BA', 'HON', 'TRV', 'UNH', 'JNJ', 'PG', 'PFE', 'MRK', 'CVX', 'XOM', 'COP', 'SLB', 'EOG', 'F', 'GM', 'C', 'BAC', 'WFC', 'USB', 'T', 'VZ', 'TMUS'];
+    
+    // Known German stocks (XETRA)
+    const xetraStocks = ['PUM', 'ADS', 'BMW', 'VOW3', 'DAI', 'SAP', 'SIE', 'ALV', 'DTE', 'DBK', 'BAS', 'BAYN', 'FRE', 'HEI', 'MUV2', 'CON', 'IFX', 'MRK', 'FME'];
+    
+    // Known London stocks
+    const lseStocks = ['BP', 'SHEL', 'HSBA', 'BARC', 'LLOY', 'RDSA', 'AZN', 'GSK', 'ULVR', 'NG', 'TSCO', 'BT-A'];
+    
+    // Known Amsterdam stocks  
+    const aexStocks = ['ASML', 'INGA', 'PHIA', 'UNA', 'RDSA', 'AD', 'HEIA', 'MT'];
+    
+    // Known Hong Kong stocks
+    const hkStocks = ['0700', '9988', '0005', '0941', '2318', '1299'];
+    
+    // Known Tokyo stocks
+    const tseStocks = ['7203', '6758', '9984', '6861', '4519', '6702'];
+
+    const upperSymbol = symbol.toUpperCase();
+    
+    if (nyseStocks.includes(upperSymbol)) return `NYSE:${upperSymbol}`;
+    if (xetraStocks.includes(upperSymbol)) return `XETRA:${upperSymbol}`;
+    if (lseStocks.includes(upperSymbol)) return `LSE:${upperSymbol}`;
+    if (aexStocks.includes(upperSymbol)) return `AEX:${upperSymbol}`;
+    if (hkStocks.includes(upperSymbol)) return `HKEX:${upperSymbol}`;
+    if (tseStocks.includes(upperSymbol)) return `TSE:${upperSymbol}`;
+    
+    // Default: try NASDAQ first, then just symbol
+    return upperSymbol;
+  }
+
   if (!stock) return null
 
   const newsLinks = [
@@ -302,14 +335,14 @@ function StockDetailModal({ stock, isOpen, onClose }: {
                   <div className="bg-card rounded-lg border border-border overflow-hidden h-[400px]">
                     <iframe 
                       key={`${stock.symbol}-${chartInterval}`}
-                      src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${stock.symbol}&interval=${intervalMap[chartInterval]}&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                      src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${getTradingViewSymbol(stock.symbol)}&interval=${intervalMap[chartInterval]}&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
                       style={{ width: '100%', height: '100%', minHeight: '350px', border: 'none' }}
                       loading="lazy"
                     />
                   </div>
                   <div className="mt-4 flex flex-wrap gap-3">
                     <a 
-                      href={`https://www.tradingview.com/chart/?symbol=${stock.symbol}`}
+                      href={`https://www.tradingview.com/chart/?symbol=${getTradingViewSymbol(stock.symbol)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors"
