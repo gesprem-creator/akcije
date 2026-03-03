@@ -180,7 +180,7 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
             <tr key={stock.symbol} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
               <td className="py-2 px-2 text-sm font-medium text-black">{index + 1}</td>
               <td className="py-2 px-2">
-                <span className="font-bold text-sm text-black">{stock.symbol}</span>
+                <span className={`font-bold text-sm ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>{stock.symbol}</span>
               </td>
               <td className="py-2 px-2 text-sm text-black/70 hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
@@ -513,7 +513,7 @@ function SearchResultsTable({ stocks, onStockClick }: {
               onClick={() => onStockClick(stock)}
             >
               <td className="py-2 px-2">
-                <span className="font-bold text-sm text-blue-500 hover:underline">{stock.symbol}</span>
+                <span className={`font-bold text-sm ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'} hover:underline`}>{stock.symbol}</span>
               </td>
               <td className="py-2 px-2 text-sm text-black/70 hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
