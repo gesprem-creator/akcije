@@ -986,7 +986,7 @@ export default function Home() {
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Stock Dashboard</h1>
+                <h1 className="text-xl font-bold">Pregled Akcija</h1>
                 <p className="text-sm text-muted-foreground">Top Gainers & Losers</p>
               </div>
             </div>
@@ -1311,7 +1311,7 @@ export default function Home() {
       <footer className="border-t border-border bg-card/30 mt-auto">
         <div className="container mx-auto px-4 py-4">
           <p className="text-sm text-muted-foreground text-center">
-            Stock Dashboard • Podaci sa Google Sheets • AI preporuke
+            Pregled Akcija • Podaci sa Google Sheets • AI preporuke
           </p>
         </div>
       </footer>
