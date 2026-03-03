@@ -1116,12 +1116,12 @@ export default function Home() {
 
                 {/* Main Tabs */}
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-                  <TabsList className="grid w-full grid-cols-2 lg:w-[400px] bg-white border border-border">
-                    <TabsTrigger value="losers" className="gap-2 data-[state=active]:bg-red-500 data-[state=active]:text-white text-black">
+                  <TabsList className="grid w-full grid-cols-2 lg:w-[400px] bg-transparent border border-border">
+                    <TabsTrigger value="losers" className="gap-2 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=inactive]:bg-red-100 data-[state=inactive]:text-red-700 data-[state=inactive]:hover:bg-red-200">
                       <TrendingDown className="w-4 h-4" />
                       Top Losers
                     </TabsTrigger>
-                    <TabsTrigger value="gainers" className="gap-2 data-[state=active]:bg-green-500 data-[state=active]:text-white text-black">
+                    <TabsTrigger value="gainers" className="gap-2 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=inactive]:bg-green-100 data-[state=inactive]:text-green-700 data-[state=inactive]:hover:bg-green-200">
                       <TrendingUp className="w-4 h-4" />
                       Top Gainers
                     </TabsTrigger>
