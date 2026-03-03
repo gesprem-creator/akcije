@@ -165,20 +165,20 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
       <table className="w-full">
         <thead>
           <tr className="border-b border-border">
-            <th className="text-left py-2 px-2 text-xs font-medium text-black dark:text-white">#</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-black dark:text-white">Symbol</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-black dark:text-white hidden md:table-cell">Name</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-black dark:text-white pl-4">Price</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-black dark:text-white">1 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-black dark:text-white">5 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-black dark:text-white">10 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-black dark:text-white hidden lg:table-cell">Mkt Cap</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-foreground">#</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-foreground">Symbol</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-foreground hidden md:table-cell">Name</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-foreground pl-4">Price</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-foreground">1 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-foreground">5 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-foreground">10 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-foreground hidden lg:table-cell">Mkt Cap</th>
           </tr>
         </thead>
         <tbody>
           {sortedStocks.map((stock, index) => (
             <tr key={stock.symbol} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
-              <td className="py-2 px-2 text-sm font-medium text-black dark:text-white">{index + 1}</td>
+              <td className="py-2 px-2 text-sm font-medium text-foreground">{index + 1}</td>
               <td className="py-2 px-2">
                 <a 
                   href={`https://www.google.com/search?q=${stock.symbol}+stock+chart`}
@@ -189,10 +189,10 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
                   {stock.symbol}
                 </a>
               </td>
-              <td className="py-2 px-2 text-sm text-black/70 dark:text-white/70 hidden md:table-cell max-w-[180px] truncate">
+              <td className="py-2 px-2 text-sm text-muted-foreground hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
               </td>
-              <td className="py-2 px-2 text-sm text-left font-mono pl-4 text-black dark:text-white">
+              <td className="py-2 px-2 text-sm text-left font-mono pl-4 text-foreground">
                 {formatPrice(stock.price)}
               </td>
               <td className="py-2 px-2 text-right">
@@ -210,7 +210,7 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
                   {formatPercent(stock.day10Pct)}
                 </span>
               </td>
-              <td className="py-2 px-2 text-sm text-right text-black/70 dark:text-white/70 hidden lg:table-cell">
+              <td className="py-2 px-2 text-sm text-right text-muted-foreground hidden lg:table-cell">
                 {formatMarketCap(stock.marketCap)}
               </td>
             </tr>
