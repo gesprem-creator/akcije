@@ -164,18 +164,18 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Symbol required' }, { status: 400 });
   }
   
-  // Try to fetch real data first
-  const realData = await fetchFinancialDataFromWeb(symbol);
-  
-  if (realData) {
-    return NextResponse.json({ success: true, data: realData, source: 'live' });
-  }
-  
-  // Fall back to simulated data for known stocks
+  // First check if we have known data for this stock
   const simulatedData = getSimulatedFinancialData(symbol);
   
   if (simulatedData.pe !== null || simulatedData.revenue !== null) {
     return NextResponse.json({ success: true, data: simulatedData, source: 'database' });
+  }
+  
+  // Try to fetch real data for unknown stocks
+  const realData = await fetchFinancialDataFromWeb(symbol);
+  
+  if (realData && (realData.pe !== null || realData.revenue !== null)) {
+    return NextResponse.json({ success: true, data: realData, source: 'live' });
   }
   
   return NextResponse.json({ 
