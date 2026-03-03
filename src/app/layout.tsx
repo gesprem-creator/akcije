@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   keywords: ["akcije", "stock", "dashboard", "TradingView", "gainers", "losers", "berza", "investiranje"],
   authors: [{ name: "gesprem-creator" }],
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2322c55e'/><text x='50' y='62' font-size='35' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>VS</text></svg>",
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2322c55e'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>S</text></svg>",
   },
   openGraph: {
     title: "Akcije - Stock Dashboard",
