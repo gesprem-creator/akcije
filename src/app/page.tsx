@@ -228,6 +228,38 @@ function StockDetailModal({ stock, isOpen, onClose }: {
 }) {
   const [modalSize, setModalSize] = useState({ width: 85, height: 93 })
   const [chartInterval, setChartInterval] = useState<'1D' | '1W' | '1M' | '3M' | '1Y' | '5Y'>('1M')
+  const [financials, setFinancials] = useState<any>(null)
+  const [financialsLoading, setFinancialsLoading] = useState(false)
+
+  // Fetch financial data when stock changes
+  useEffect(() => {
+    if (!stock?.symbol) return
+    
+    let isMounted = true
+    const controller = new AbortController()
+    
+    async function loadFinancials() {
+      try {
+        setFinancialsLoading(true)
+        const res = await fetch(`/api/financials?symbol=${stock.symbol}`, { signal: controller.signal })
+        const data = await res.json()
+        if (isMounted && data.success) {
+          setFinancials(data.data)
+        }
+      } catch (err) {
+        if (isMounted) console.error('Failed to fetch financials:', err)
+      } finally {
+        if (isMounted) setFinancialsLoading(false)
+      }
+    }
+    
+    loadFinancials()
+    
+    return () => {
+      isMounted = false
+      controller.abort()
+    }
+  }, [stock?.symbol])
 
   const intervalMap: Record<string, string> = {
     '1D': '1',
@@ -420,6 +452,80 @@ function StockDetailModal({ stock, isOpen, onClose }: {
                       <p className="text-xl font-bold">{stock.pe || 'N/A'}</p>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Financial Overview */}
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-xl flex items-center gap-2">
+                    <BarChart3 className="w-6 h-6" />
+                    Financial Overview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {financialsLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <RefreshCw className="w-6 h-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : financials ? (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">P/E Ratio</p>
+                        <p className="text-lg font-bold">{financials.pe?.toFixed(2) || 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">EPS</p>
+                        <p className="text-lg font-bold">{financials.eps?.toFixed(2) || 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Revenue</p>
+                        <p className="text-lg font-bold">{financials.revenue ? formatMarketCap(financials.revenue) : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Net Income</p>
+                        <p className={`text-lg font-bold ${financials.netIncome < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                          {financials.netIncome ? formatMarketCap(financials.netIncome) : 'N/A'}
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Total Debt</p>
+                        <p className="text-lg font-bold text-red-400">{financials.totalDebt ? formatMarketCap(financials.totalDebt) : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">ROE</p>
+                        <p className="text-lg font-bold">{financials.roe ? (financials.roe * 100).toFixed(1) + '%' : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Profit Margin</p>
+                        <p className="text-lg font-bold">{financials.profitMargin ? (financials.profitMargin * 100).toFixed(1) + '%' : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Dividend Yield</p>
+                        <p className="text-lg font-bold">{financials.dividendYield ? (financials.dividendYield * 100).toFixed(2) + '%' : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">52W High</p>
+                        <p className="text-lg font-bold text-green-500">{financials.fiftyTwoWeekHigh ? '$' + financials.fiftyTwoWeekHigh.toFixed(2) : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">52W Low</p>
+                        <p className="text-lg font-bold text-red-500">{financials.fiftyTwoWeekLow ? '$' + financials.fiftyTwoWeekLow.toFixed(2) : 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Current Ratio</p>
+                        <p className="text-lg font-bold">{financials.currentRatio?.toFixed(2) || 'N/A'}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <p className="text-xs text-muted-foreground">Beta</p>
+                        <p className="text-lg font-bold">{financials.beta?.toFixed(2) || 'N/A'}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center text-muted-foreground py-8">
+                      <p>Financial data not available</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
