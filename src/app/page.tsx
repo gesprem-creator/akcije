@@ -302,14 +302,14 @@ function StockDetailModal({ stock, isOpen, onClose }: {
                   <div className="bg-card rounded-lg border border-border overflow-hidden h-[400px]">
                     <iframe 
                       key={`${stock.symbol}-${chartInterval}`}
-                      src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=NASDAQ%3A${stock.symbol}&interval=${intervalMap[chartInterval]}&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                      src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${stock.symbol}&interval=${intervalMap[chartInterval]}&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
                       style={{ width: '100%', height: '100%', minHeight: '350px', border: 'none' }}
                       loading="lazy"
                     />
                   </div>
                   <div className="mt-4 flex flex-wrap gap-3">
                     <a 
-                      href={`https://www.tradingview.com/chart/?symbol=NASDAQ%3A${stock.symbol}`}
+                      href={`https://www.tradingview.com/chart/?symbol=${stock.symbol}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors"
