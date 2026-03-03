@@ -1136,7 +1136,7 @@ export default function Home() {
                   {/* Losers Tab */}
                   <TabsContent value="losers" className="space-y-6">
                     <div className="grid lg:grid-cols-2 gap-6">
-                      <Card>
+                      <Card className="bg-red-500/10 border-red-500/30">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <TrendingDown className="w-5 h-5 text-red-500" />
@@ -1149,7 +1149,7 @@ export default function Home() {
                         </CardContent>
                       </Card>
 
-                      <Card>
+                      <Card className="bg-red-500/10 border-red-500/30">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <TrendingDown className="w-5 h-5 text-red-500" />
@@ -1205,7 +1205,7 @@ export default function Home() {
                   {/* Gainers Tab */}
                   <TabsContent value="gainers" className="space-y-6">
                     <div className="grid lg:grid-cols-2 gap-6">
-                      <Card>
+                      <Card className="bg-green-500/10 border-green-500/30">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <TrendingUp className="w-5 h-5 text-green-500" />
@@ -1218,7 +1218,7 @@ export default function Home() {
                         </CardContent>
                       </Card>
 
-                      <Card>
+                      <Card className="bg-green-500/10 border-green-500/30">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <TrendingUp className="w-5 h-5 text-green-500" />
