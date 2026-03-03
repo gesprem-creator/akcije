@@ -165,27 +165,27 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
       <table className="w-full">
         <thead>
           <tr className="border-b border-border">
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground">#</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground">Symbol</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground hidden md:table-cell">Name</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground pl-4">Price</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">1 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">5 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">10 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground hidden lg:table-cell">Mkt Cap</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black">#</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black">Symbol</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black hidden md:table-cell">Name</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black pl-4">Price</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">1 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">5 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">10 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black hidden lg:table-cell">Mkt Cap</th>
           </tr>
         </thead>
         <tbody>
           {sortedStocks.map((stock, index) => (
             <tr key={stock.symbol} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
-              <td className="py-2 px-2 text-sm font-medium">{index + 1}</td>
+              <td className="py-2 px-2 text-sm font-medium text-black">{index + 1}</td>
               <td className="py-2 px-2">
-                <span className="font-bold text-sm">{stock.symbol}</span>
+                <span className="font-bold text-sm text-black">{stock.symbol}</span>
               </td>
-              <td className="py-2 px-2 text-sm text-muted-foreground hidden md:table-cell max-w-[180px] truncate">
+              <td className="py-2 px-2 text-sm text-black/70 hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
               </td>
-              <td className="py-2 px-2 text-sm text-left font-mono pl-4">
+              <td className="py-2 px-2 text-sm text-left font-mono pl-4 text-black">
                 {formatPrice(stock.price)}
               </td>
               <td className="py-2 px-2 text-right">
@@ -203,7 +203,7 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
                   {formatPercent(stock.day10Pct)}
                 </span>
               </td>
-              <td className="py-2 px-2 text-sm text-right text-muted-foreground hidden lg:table-cell">
+              <td className="py-2 px-2 text-sm text-right text-black/70 hidden lg:table-cell">
                 {formatMarketCap(stock.marketCap)}
               </td>
             </tr>
@@ -496,13 +496,13 @@ function SearchResultsTable({ stocks, onStockClick }: {
       <table className="w-full">
         <thead>
           <tr className="border-b border-border">
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground">Symbol</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground hidden md:table-cell">Name</th>
-            <th className="text-left py-2 px-2 text-xs font-medium text-muted-foreground pl-4">Price</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">1 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">5 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground">10 Day</th>
-            <th className="text-right py-2 px-2 text-xs font-medium text-muted-foreground hidden lg:table-cell">Mkt Cap</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black">Symbol</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black hidden md:table-cell">Name</th>
+            <th className="text-left py-2 px-2 text-xs font-medium text-black pl-4">Price</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">1 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">5 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black">10 Day</th>
+            <th className="text-right py-2 px-2 text-xs font-medium text-black hidden lg:table-cell">Mkt Cap</th>
           </tr>
         </thead>
         <tbody>
@@ -515,10 +515,10 @@ function SearchResultsTable({ stocks, onStockClick }: {
               <td className="py-2 px-2">
                 <span className="font-bold text-sm text-blue-500 hover:underline">{stock.symbol}</span>
               </td>
-              <td className="py-2 px-2 text-sm text-muted-foreground hidden md:table-cell max-w-[180px] truncate">
+              <td className="py-2 px-2 text-sm text-black/70 hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
               </td>
-              <td className="py-2 px-2 text-sm text-left font-mono pl-4">
+              <td className="py-2 px-2 text-sm text-left font-mono pl-4 text-black">
                 {formatPrice(stock.price)}
               </td>
               <td className="py-2 px-2 text-right">
@@ -536,7 +536,7 @@ function SearchResultsTable({ stocks, onStockClick }: {
                   {formatPercent(stock.day10Pct)}
                 </span>
               </td>
-              <td className="py-2 px-2 text-sm text-right text-muted-foreground hidden lg:table-cell">
+              <td className="py-2 px-2 text-sm text-right text-black/70 hidden lg:table-cell">
                 {formatMarketCap(stock.marketCap)}
               </td>
             </tr>
