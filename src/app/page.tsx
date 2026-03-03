@@ -180,7 +180,14 @@ function StockTable({ stocks, sortBy = 'changePct', sortOrder = 'asc' }: { stock
             <tr key={stock.symbol} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
               <td className="py-2 px-2 text-sm font-medium text-black dark:text-white">{index + 1}</td>
               <td className="py-2 px-2">
-                <span className={`font-bold text-sm ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>{stock.symbol}</span>
+                <a 
+                  href={`https://www.google.com/search?q=${stock.symbol}+stock+chart`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`font-bold text-sm hover:underline cursor-pointer ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}
+                >
+                  {stock.symbol}
+                </a>
               </td>
               <td className="py-2 px-2 text-sm text-black/70 dark:text-white/70 hidden md:table-cell max-w-[180px] truncate">
                 {stock.name}
