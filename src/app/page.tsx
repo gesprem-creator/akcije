@@ -572,7 +572,7 @@ function StockChart({ stocks, dataKey, type }: {
         <YAxis 
           type="category" 
           dataKey="symbol" 
-          tick={{ fill: '#fff', fontSize: 12, fontWeight: 'bold' }}
+          tick={{ fill: '#000', fontSize: 12, fontWeight: 'bold' }}
           width={60}
         />
         <Tooltip 
