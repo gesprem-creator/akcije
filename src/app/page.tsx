@@ -607,16 +607,22 @@ function SummaryCard({ title, value, subtitle, icon: Icon, trend }: {
   icon: React.ElementType
   trend?: 'up' | 'down'
 }) {
+  const bgClass = trend === 'up' 
+    ? 'bg-green-500/10 border-green-500/30' 
+    : trend === 'down' 
+    ? 'bg-red-500/10 border-red-500/30' 
+    : 'bg-gradient-to-br from-card to-card/50 border-border/50'
+    
   return (
-    <Card className="bg-gradient-to-br from-card to-card/50 border-border/50">
+    <Card className={`${bgClass}`}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold mt-1">{value}</p>
+            <p className={`text-2xl font-bold mt-1 ${trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : ''}`}>{value}</p>
             <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
           </div>
-          <div className={`p-3 rounded-full ${trend === 'up' ? 'bg-green-500/10' : trend === 'down' ? 'bg-red-500/10' : 'bg-primary/10'}`}>
+          <div className={`p-3 rounded-full ${trend === 'up' ? 'bg-green-500/20' : trend === 'down' ? 'bg-red-500/20' : 'bg-primary/10'}`}>
             <Icon className={`w-6 h-6 ${trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : 'text-primary'}`} />
           </div>
         </div>
