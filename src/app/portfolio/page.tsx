@@ -685,7 +685,7 @@ export default function PortfolioPage() {
                               
                               {/* Chart Preview when stock selected */}
                               {selectedStock && (
-                                <div className="bg-card rounded-lg border border-border overflow-hidden h-[400px] w-[750px]">
+                                <div className="bg-card rounded-lg border border-border overflow-hidden h-[400px] w-[850px]">
                                   <iframe 
                                     key={selectedStock.symbol}
                                     src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
