@@ -530,6 +530,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             {portfolio.holdings.map((holding) => {
                                 const { value, profit, profitPercent } = getHoldingValue(holding)
                                 const currentPrice = getCurrentPrice(holding.symbol)
+                                const invested = holding.shares * holding.avgBuyPrice // Ukupno uloženo
                                 
                                 return (
                                   <div key={holding.symbol} className="p-3 rounded-lg bg-muted/50 border border-border/50">
@@ -544,7 +545,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                         {formatPercent(profitPercent)}
                                       </Badge>
                                     </div>
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm mb-2">
                                       <div className="bg-muted/30 rounded px-2 py-1">
                                         <p className="text-muted-foreground text-xs">Količina</p>
                                         <p className="font-medium text-sm">{holding.shares}</p>
@@ -557,9 +558,15 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                         <p className="text-muted-foreground text-xs">Trenutna Cena</p>
                                         <p className="font-medium text-sm">{formatPrice(currentPrice)}</p>
                                       </div>
-                                      <div className="bg-muted/30 rounded px-2 py-1">
-                                        <p className="text-muted-foreground text-xs">Vrednost</p>
-                                        <p className="font-medium text-sm">{formatPrice(value)}</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2 text-sm mb-2">
+                                      <div className="bg-blue-500/10 border border-blue-500/20 rounded px-2 py-1">
+                                        <p className="text-blue-500 text-xs">Uloženo</p>
+                                        <p className="font-medium text-sm">{formatPrice(invested)}</p>
+                                      </div>
+                                      <div className={`${profit >= 0 ? 'bg-green-500/10 border-green-500/20' : 'bg-red-500/10 border-red-500/20'} border rounded px-2 py-1`}>
+                                        <p className={`${profit >= 0 ? 'text-green-500' : 'text-red-500'} text-xs`}>Trenutna Vrednost</p>
+                                        <p className={`font-medium text-sm ${profit >= 0 ? 'text-green-500' : 'text-red-500'}`}>{formatPrice(value)}</p>
                                       </div>
                                     </div>
                                     <div className="flex gap-2 mt-2">
