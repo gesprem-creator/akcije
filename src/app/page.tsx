@@ -21,6 +21,7 @@ import {
   Wallet
 } from 'lucide-react'
 import { PortfolioModal } from '@/components/portfolio-modal'
+import { SentimentCards } from '@/components/sentiment-cards'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { 
   BarChart, 
@@ -1258,6 +1259,9 @@ export default function Home() {
                     symbol={data.topGainers10Day[0]?.symbol}
                   />
                 </div>
+
+                {/* Market Sentiment Cards */}
+                <SentimentCards />
 
                 {/* News & Recommendations */}
                 <div className="grid lg:grid-cols-2 gap-6">
