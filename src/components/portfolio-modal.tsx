@@ -699,33 +699,47 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                         </div>
 
                         {searchQuery && filteredStocks.length > 0 && (
-                          <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                            {filteredStocks.map((stock) => (
-                              <div 
-                                key={stock.symbol}
-                                className={`p-3 rounded-lg cursor-pointer transition-all ${
-                                  selectedStock?.symbol === stock.symbol 
-                                    ? 'bg-primary/10 border border-primary/30' 
-                                    : 'bg-muted/50 hover:bg-muted border border-transparent'
-                                }`}
-                                onClick={() => setSelectedStock(stock)}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <span className={`font-bold ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                                      {stock.symbol}
-                                    </span>
-                                    <span className="text-sm text-muted-foreground ml-2">{stock.name}</span>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="font-medium">{formatPrice(stock.price)}</p>
-                                    <p className={`text-xs ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                                      {formatPercent(stock.changePct * 100)}
-                                    </p>
+                          <div className="space-y-3">
+                            <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                              {filteredStocks.map((stock) => (
+                                <div 
+                                  key={stock.symbol}
+                                  className={`p-3 rounded-lg cursor-pointer transition-all ${
+                                    selectedStock?.symbol === stock.symbol 
+                                      ? 'bg-primary/10 border border-primary/30' 
+                                      : 'bg-muted/50 hover:bg-muted border border-transparent'
+                                  }`}
+                                  onClick={() => setSelectedStock(stock)}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <div>
+                                      <span className={`font-bold ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                        {stock.symbol}
+                                      </span>
+                                      <span className="text-sm text-muted-foreground ml-2">{stock.name}</span>
+                                    </div>
+                                    <div className="text-right">
+                                      <p className="font-medium">{formatPrice(stock.price)}</p>
+                                      <p className={`text-xs ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                        {formatPercent(stock.changePct * 100)}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
+                              ))}
+                            </div>
+                            
+                            {/* Chart Preview when stock selected */}
+                            {selectedStock && (
+                              <div className="bg-card rounded-lg border border-border overflow-hidden h-[200px]">
+                                <iframe 
+                                  key={selectedStock.symbol}
+                                  src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                                  style={{ width: '100%', height: '100%', border: 'none' }}
+                                  loading="lazy"
+                                />
                               </div>
-                            ))}
+                            )}
                           </div>
                         )}
 
@@ -774,16 +788,6 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                   {formatPercent(selectedStock.changePct * 100)} danas
                                 </p>
                               </div>
-                            </div>
-
-                            {/* Chart Preview */}
-                            <div className="bg-card rounded-lg border border-border overflow-hidden h-[200px]">
-                              <iframe 
-                                key={selectedStock.symbol}
-                                src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
-                                style={{ width: '100%', height: '100%', border: 'none' }}
-                                loading="lazy"
-                              />
                             </div>
 
                             {/* Quick Links */}

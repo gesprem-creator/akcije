@@ -651,36 +651,50 @@ export default function PortfolioPage() {
                           </div>
 
                           {searchQuery && filteredStocks.length > 0 && (
-                            <ScrollArea className="h-[500px] pr-4">
-                              <div className="space-y-2">
-                                {filteredStocks.map((stock) => (
-                                  <div 
-                                    key={stock.symbol}
-                                    className={`p-4 rounded-lg cursor-pointer transition-all ${
-                                      selectedStock?.symbol === stock.symbol 
-                                        ? 'bg-primary/10 border border-primary/30' 
-                                        : 'bg-muted/50 hover:bg-muted border border-transparent'
-                                    }`}
-                                    onClick={() => setSelectedStock(stock)}
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <div>
-                                        <span className={`font-bold text-lg ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                                          {stock.symbol}
-                                        </span>
-                                        <span className="text-sm text-muted-foreground ml-2">{stock.name}</span>
-                                      </div>
-                                      <div className="text-right">
-                                        <p className="font-medium">{formatPrice(stock.price)}</p>
-                                        <p className={`text-xs ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                                          {formatPercent(stock.changePct * 100)}
-                                        </p>
+                            <div className="space-y-3">
+                              <ScrollArea className="h-[250px] pr-4">
+                                <div className="space-y-2">
+                                  {filteredStocks.map((stock) => (
+                                    <div 
+                                      key={stock.symbol}
+                                      className={`p-4 rounded-lg cursor-pointer transition-all ${
+                                        selectedStock?.symbol === stock.symbol 
+                                          ? 'bg-primary/10 border border-primary/30' 
+                                          : 'bg-muted/50 hover:bg-muted border border-transparent'
+                                      }`}
+                                      onClick={() => setSelectedStock(stock)}
+                                    >
+                                      <div className="flex items-center justify-between">
+                                        <div>
+                                          <span className={`font-bold text-lg ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                            {stock.symbol}
+                                          </span>
+                                          <span className="text-sm text-muted-foreground ml-2">{stock.name}</span>
+                                        </div>
+                                        <div className="text-right">
+                                          <p className="font-medium">{formatPrice(stock.price)}</p>
+                                          <p className={`text-xs ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                            {formatPercent(stock.changePct * 100)}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </ScrollArea>
+                                  ))}
+                                </div>
+                              </ScrollArea>
+                              
+                              {/* Chart Preview when stock selected */}
+                              {selectedStock && (
+                                <div className="bg-card rounded-lg border border-border overflow-hidden h-[200px]">
+                                  <iframe 
+                                    key={selectedStock.symbol}
+                                    src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                                    style={{ width: '100%', height: '100%', border: 'none' }}
+                                    loading="lazy"
+                                  />
+                                </div>
+                              )}
+                            </div>
                           )}
 
                           {searchQuery && filteredStocks.length === 0 && (
@@ -715,20 +729,42 @@ export default function PortfolioPage() {
                           <p>Selektujte akciju za kupovinu</p>
                         </div>
                       ) : (
-                        <div className="space-y-6">
-                          <div className="p-6 rounded-lg bg-muted/50 border border-border/50">
-                            <div className="flex items-center justify-between mb-3">
-                              <span className={`font-bold text-2xl ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        <div className="space-y-4">
+                          <div className="p-4 rounded-lg bg-muted/50 border border-border/50">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`font-bold text-xl ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                 {selectedStock.symbol}
                               </span>
                               <Badge variant="outline">{selectedStock.name}</Badge>
                             </div>
                             <div className="flex items-center gap-4">
-                              <p className="text-3xl font-bold">{formatPrice(selectedStock.price)}</p>
+                              <p className="text-2xl font-bold">{formatPrice(selectedStock.price)}</p>
                               <p className={`text-sm ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                 {formatPercent(selectedStock.changePct * 100)} danas
                               </p>
                             </div>
+                          </div>
+
+                          {/* Quick Links */}
+                          <div className="flex gap-2">
+                            <a 
+                              href={`https://www.tradingview.com/chart/?symbol=${selectedStock.symbol}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded text-sm bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              TradingView
+                            </a>
+                            <a 
+                              href={`https://www.google.com/finance/quote/${selectedStock.symbol}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded text-sm bg-green-500/10 text-green-500 hover:bg-green-500/20 transition-colors"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Google Finance
+                            </a>
                           </div>
 
                           <div>
@@ -763,10 +799,10 @@ export default function PortfolioPage() {
                           </div>
 
                           {quantity && parseInt(quantity) > 0 && (
-                            <div className="p-6 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                            <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
                               <div className="flex items-center justify-between mb-2">
                                 <span className="text-muted-foreground">Ukupno:</span>
-                                <span className="text-2xl font-bold text-blue-500">
+                                <span className="text-xl font-bold text-blue-500">
                                   {formatPrice(parseInt(quantity) * selectedStock.price)}
                                 </span>
                               </div>
