@@ -18,7 +18,9 @@ import {
   Loader2,
   Maximize2,
   TrendingDown as TrendingDownIcon,
-  GripVertical
+  GripVertical,
+  ExternalLink,
+  BarChart3
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -757,30 +759,64 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             <p>Selektujte akciju za kupovinu</p>
                           </div>
                         ) : (
-                          <div className="space-y-6">
-                            <div className="p-4 rounded-lg bg-muted/50 border border-border/50">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className={`font-bold text-xl ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                          <div className="space-y-4">
+                            {/* Stock Info Header */}
+                            <div className="p-3 rounded-lg bg-muted/50 border border-border/50">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className={`font-bold text-lg ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                   {selectedStock.symbol}
                                 </span>
-                                <Badge variant="outline">{selectedStock.name}</Badge>
+                                <Badge variant="outline" className="text-xs">{selectedStock.name}</Badge>
                               </div>
-                              <div className="flex items-center gap-4">
-                                <p className="text-2xl font-bold">{formatPrice(selectedStock.price)}</p>
+                              <div className="flex items-center gap-3">
+                                <p className="text-xl font-bold">{formatPrice(selectedStock.price)}</p>
                                 <p className={`text-sm ${selectedStock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                   {formatPercent(selectedStock.changePct * 100)} danas
                                 </p>
                               </div>
                             </div>
 
+                            {/* Chart Preview */}
+                            <div className="bg-card rounded-lg border border-border overflow-hidden h-[200px]">
+                              <iframe 
+                                key={selectedStock.symbol}
+                                src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                                style={{ width: '100%', height: '100%', border: 'none' }}
+                                loading="lazy"
+                              />
+                            </div>
+
+                            {/* Quick Links */}
+                            <div className="flex gap-2">
+                              <a 
+                                href={`https://www.tradingview.com/chart/?symbol=${selectedStock.symbol}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors"
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                                TradingView
+                              </a>
+                              <a 
+                                href={`https://www.google.com/finance/quote/${selectedStock.symbol}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-green-500/10 text-green-500 hover:bg-green-500/20 transition-colors"
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                                Google
+                              </a>
+                            </div>
+
+                            {/* Quantity Input */}
                             <div>
-                              <label className="text-sm text-muted-foreground mb-2 block">Količina</label>
+                              <label className="text-sm text-muted-foreground mb-1 block">Količina</label>
                               <Input
                                 type="number"
                                 placeholder="Broj akcija"
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
-                                className="text-lg"
+                                className="text-lg h-10"
                               />
                               <div className="flex gap-2 mt-2">
                                 {quickBuyAmounts.map((amt) => (
@@ -788,6 +824,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                     key={amt} 
                                     variant="outline" 
                                     size="sm"
+                                    className="h-7 text-xs"
                                     onClick={() => setQuantity(amt.toString())}
                                   >
                                     {amt}
@@ -796,6 +833,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                 <Button 
                                   variant="outline" 
                                   size="sm"
+                                  className="h-7 text-xs"
                                   onClick={() => {
                                     const maxShares = Math.floor(portfolio.balance / selectedStock.price)
                                     setQuantity(maxShares.toString())
@@ -807,14 +845,14 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             </div>
 
                             {quantity && parseInt(quantity) > 0 && (
-                              <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="text-muted-foreground">Ukupno:</span>
-                                  <span className="text-xl font-bold text-blue-500">
+                              <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-sm text-muted-foreground">Ukupno:</span>
+                                  <span className="text-lg font-bold text-blue-500">
                                     {formatPrice(parseInt(quantity) * selectedStock.price)}
                                   </span>
                                 </div>
-                                <div className="flex items-center justify-between text-sm">
+                                <div className="flex items-center justify-between text-xs">
                                   <span className="text-muted-foreground">Preostali balans:</span>
                                   <span className={portfolio.balance - parseInt(quantity) * selectedStock.price < 0 ? 'text-red-500' : 'text-green-500'}>
                                     {formatPrice(portfolio.balance - parseInt(quantity) * selectedStock.price)}
@@ -823,16 +861,16 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                               </div>
                             )}
 
-                            <div className="flex gap-3">
+                            <div className="flex gap-2">
                               <Button 
-                                className="flex-1"
+                                className="flex-1 h-9"
                                 disabled={!quantity || parseInt(quantity) <= 0 || parseInt(quantity) * selectedStock.price > portfolio.balance || buying}
                                 onClick={handleBuy}
                               >
                                 {buying ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
                                 Kupi {quantity || 0} Akcija
                               </Button>
-                              <Button variant="outline" onClick={() => setSelectedStock(null)}>
+                              <Button variant="outline" size="sm" className="h-9" onClick={() => setSelectedStock(null)}>
                                 <X className="w-4 h-4" />
                               </Button>
                             </div>

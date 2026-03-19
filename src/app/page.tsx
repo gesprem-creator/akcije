@@ -1184,20 +1184,94 @@ export default function Home() {
 
             {/* Search Results */}
             {searchQuery && searchResults.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Search className="w-5 h-5 text-primary" />
-                    Search Results
-                  </CardTitle>
-                  <CardDescription>Stocks matching your search</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="max-h-[400px]">
-                    <SearchResultsTable stocks={searchResults} onStockClick={handleStockClick} />
-                  </ScrollArea>
-                </CardContent>
-              </Card>
+              <div className="space-y-4">
+                {/* Quick Chart Preview for first result */}
+                {searchResults.length === 1 && (
+                  <Card className="border-primary/30 bg-gradient-to-br from-card to-card/50">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-3">
+                          <span className={`text-2xl font-bold ${searchResults[0].changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                            {searchResults[0].symbol}
+                          </span>
+                          <span className="text-lg text-muted-foreground font-normal">{searchResults[0].name}</span>
+                        </CardTitle>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl font-mono">{formatPrice(searchResults[0].price)}</span>
+                          <span className={`text-lg font-bold ${searchResults[0].changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                            {formatPercent(searchResults[0].changePct)}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStockClick(searchResults[0])}
+                            className="gap-2"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            Details
+                          </Button>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4">
+                      <div className="bg-card rounded-lg border border-border overflow-hidden h-[350px]">
+                        <iframe 
+                          src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${searchResults[0].symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
+                          style={{ width: '100%', height: '100%', border: 'none' }}
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <a 
+                          href={`https://www.tradingview.com/chart/?symbol=${searchResults[0].symbol}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors text-sm"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          TradingView
+                        </a>
+                        <a 
+                          href={`https://www.google.com/finance/quote/${searchResults[0].symbol}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-green-500/10 text-green-500 hover:bg-green-500/20 transition-colors text-sm"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Google Finance
+                        </a>
+                        <a 
+                          href={`https://finance.yahoo.com/quote/${searchResults[0].symbol}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors text-sm"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Yahoo Finance
+                        </a>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Multiple Results Table */}
+                {searchResults.length > 1 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Search className="w-5 h-5 text-primary" />
+                        Search Results
+                      </CardTitle>
+                      <CardDescription>Stocks matching your search</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ScrollArea className="max-h-[400px]">
+                        <SearchResultsTable stocks={searchResults} onStockClick={handleStockClick} />
+                      </ScrollArea>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             )}
 
             {/* No results message */}
