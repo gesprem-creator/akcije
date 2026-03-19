@@ -569,6 +569,19 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                                         <p className={`font-medium text-sm ${profit >= 0 ? 'text-green-500' : 'text-red-500'}`}>{formatPrice(value)}</p>
                                       </div>
                                     </div>
+                                    <div className={`${profit >= 0 ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-red-500/10 border-red-500/20'} border rounded px-2 py-1 mb-2`}>
+                                      <p className={`${profit >= 0 ? 'text-emerald-500' : 'text-red-500'} text-xs`}>
+                                        {profit >= 0 ? 'Profit' : 'Gubitak'}
+                                      </p>
+                                      <div className="flex items-center gap-2">
+                                        <p className={`font-medium text-sm ${profit >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                                          {profit >= 0 ? '+' : ''}{formatPrice(profit)}
+                                        </p>
+                                        <span className={`text-xs ${profit >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                                          ({profit >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%)
+                                        </span>
+                                      </div>
+                                    </div>
                                     <div className="flex gap-2 mt-2">
                                       <Input
                                         type="number"
