@@ -731,7 +731,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             
                             {/* Chart Preview when stock selected */}
                             {selectedStock && (
-                              <div className="bg-card rounded-lg border border-border overflow-hidden h-[200px]">
+                              <div className="bg-card rounded-lg border border-border overflow-hidden h-[300px] w-[280px]">
                                 <iframe 
                                   key={selectedStock.symbol}
                                   src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
