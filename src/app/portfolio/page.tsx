@@ -651,13 +651,13 @@ export default function PortfolioPage() {
                           </div>
 
                           {searchQuery && filteredStocks.length > 0 && (
-                            <div className="space-y-2">
-                              <ScrollArea className="h-[140px] pr-4">
+                            <div className="space-y-1">
+                              <ScrollArea className="h-[100px] pr-4">
                                 <div className="space-y-1">
                                   {filteredStocks.map((stock) => (
                                     <div 
                                       key={stock.symbol}
-                                      className={`p-3 rounded-lg cursor-pointer transition-all ${
+                                      className={`p-2 rounded-lg cursor-pointer transition-all ${
                                         selectedStock?.symbol === stock.symbol 
                                           ? 'bg-primary/10 border border-primary/30' 
                                           : 'bg-muted/50 hover:bg-muted border border-transparent'
@@ -666,13 +666,13 @@ export default function PortfolioPage() {
                                     >
                                       <div className="flex items-center justify-between">
                                         <div>
-                                          <span className={`font-bold text-lg ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                          <span className={`font-bold ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                             {stock.symbol}
                                           </span>
-                                          <span className="text-sm text-muted-foreground ml-2">{stock.name}</span>
+                                          <span className="text-xs text-muted-foreground ml-2">{stock.name}</span>
                                         </div>
                                         <div className="text-right">
-                                          <p className="font-medium">{formatPrice(stock.price)}</p>
+                                          <p className="font-medium text-sm">{formatPrice(stock.price)}</p>
                                           <p className={`text-xs ${stock.changePct < 0 ? 'text-red-500' : 'text-green-500'}`}>
                                             {formatPercent(stock.changePct * 100)}
                                           </p>
