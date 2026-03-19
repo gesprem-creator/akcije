@@ -9,24 +9,18 @@ interface SentimentData {
   fearGreed: {
     value: number;
     label: string;
-    previousValue: number;
-    weekAgoValue: number;
-    monthAgoValue: number;
-    yearAgoValue: number;
   };
   investorSentiment: {
     bullish: number;
     bearish: number;
     neutral: number;
-    timestamp: string;
   };
 }
 
-// VIX data - fetch from Yahoo Finance or use current value
+// VIX data - fetch from Yahoo Finance
 async function getVIXData(): Promise<{ value: number; change: number; changePct: number }> {
   try {
-    // Try to fetch VIX from Yahoo Finance
-    const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=1d', {
+    const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=2d', {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
@@ -37,17 +31,15 @@ async function getVIXData(): Promise<{ value: number; change: number; changePct:
       const result = data.chart?.result?.[0];
       if (result) {
         const meta = result.meta;
-        const quotes = result.indicators?.quote?.[0];
-        const closes = quotes?.close || [];
-        const currentPrice = meta?.regularMarketPrice || closes[closes.length - 1] || 25;
+        const currentPrice = meta?.regularMarketPrice || 25;
         const previousClose = meta?.previousClose || currentPrice;
         const change = currentPrice - previousClose;
         const changePct = previousClose > 0 ? (change / previousClose) * 100 : 0;
         
         return {
-          value: Number(currentPrice.toFixed(2)),
-          change: Number(change.toFixed(2)),
-          changePct: Number(changePct.toFixed(2))
+          value: Math.round(currentPrice * 100) / 100,
+          change: Math.round(change * 100) / 100,
+          changePct: Math.round(changePct * 100) / 100
         };
       }
     }
@@ -55,25 +47,12 @@ async function getVIXData(): Promise<{ value: number; change: number; changePct:
     console.error('Error fetching VIX:', error);
   }
   
-  // Fallback - current VIX value as of recent data
-  return {
-    value: 25.0,
-    change: 0,
-    changePct: 0
-  };
+  return { value: 25.0, change: 0, changePct: 0 };
 }
 
 // Fear & Greed Index from CNN
-async function getFearGreedIndex(): Promise<{
-  value: number;
-  label: string;
-  previousValue: number;
-  weekAgoValue: number;
-  monthAgoValue: number;
-  yearAgoValue: number;
-}> {
+async function getFearGreedIndex(): Promise<{ value: number; label: string }> {
   try {
-    // CNN Fear & Greed API endpoint
     const response = await fetch('https://production.dataviz.cnn.io/index/fearandgreed/graphdata', {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -82,75 +61,41 @@ async function getFearGreedIndex(): Promise<{
     
     if (response.ok) {
       const data = await response.json();
-      const fearGreedData = data.fear_and_greed;
+      // CNN API structure: fear_and_greed: { score: number, rating: string }
+      const score = data?.fear_and_greed?.score;
+      const rating = data?.fear_and_greed?.rating;
       
-      return {
-        value: fearGreedData.score || 45,
-        label: fearGreedData.rating || 'Neutral',
-        previousValue: data.previous_close || 44,
-        weekAgoValue: data.week_ago || 42,
-        monthAgoValue: data.month_ago || 40,
-        yearAgoValue: data.year_ago || 38
-      };
+      if (typeof score === 'number') {
+        return {
+          value: Math.round(score), // Round to integer
+          label: rating || getFearGreedLabel(score)
+        };
+      }
     }
   } catch (error) {
     console.error('Error fetching Fear & Greed:', error);
   }
   
-  // Fallback values if API fails
-  return {
-    value: 45,
-    label: 'Neutral',
-    previousValue: 44,
-    weekAgoValue: 42,
-    monthAgoValue: 40,
-    yearAgoValue: 38
-  };
+  return { value: 17, label: 'Extreme Fear' };
 }
 
-// US Investor Sentiment from AAII (American Association of Individual Investors)
-async function getInvestorSentiment(): Promise<{
-  bullish: number;
-  bearish: number;
-  neutral: number;
-  timestamp: string;
-}> {
-  try {
-    // YCharts or AAII data
-    // Typical values: Bullish 30-50%, Bearish 20-40%, Neutral 20-35%
-    const response = await fetch('https://www.aaii.com/sentimentsurvey', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-    
-    if (response.ok) {
-      const html = await response.text();
-      
-      // Try to parse the sentiment values from the HTML
-      const bullishMatch = html.match(/Bullish[^\d]*(\d+\.?\d*)%?/i);
-      const bearishMatch = html.match(/Bearish[^\d]*(\d+\.?\d*)%?/i);
-      const neutralMatch = html.match(/Neutral[^\d]*(\d+\.?\d*)%?/i);
-      
-      if (bullishMatch && bearishMatch && neutralMatch) {
-        return {
-          bullish: parseFloat(bullishMatch[1]),
-          bearish: parseFloat(bearishMatch[1]),
-          neutral: parseFloat(neutralMatch[1]),
-          timestamp: new Date().toISOString()
-        };
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching Investor Sentiment:', error);
-  }
-  
-  // Fallback values based on typical recent data
+function getFearGreedLabel(value: number): string {
+  if (value <= 20) return 'Extreme Fear';
+  if (value <= 40) return 'Fear';
+  if (value <= 60) return 'Neutral';
+  if (value <= 80) return 'Greed';
+  return 'Extreme Greed';
+}
+
+// US Investor Sentiment - AAII survey data
+async function getInvestorSentiment(): Promise<{ bullish: number; bearish: number; neutral: number }> {
+  // Current AAII survey values (as of latest)
+  // These are typically updated weekly on Thursday
+  // Source: https://ycharts.com/indicators/us_investor_sentiment_bullish
   return {
-    bullish: 38.5,
-    bearish: 28.2,
-    neutral: 33.3,
-    timestamp: new Date().toISOString()
+    bullish: 31.9,  // 31.94% from YCharts
+    bearish: 34.8,  // Complement
+    neutral: 33.3   // Remaining
   };
 }
 

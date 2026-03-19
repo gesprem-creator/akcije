@@ -14,16 +14,11 @@ interface SentimentData {
   fearGreed: {
     value: number
     label: string
-    previousValue: number
-    weekAgoValue: number
-    monthAgoValue: number
-    yearAgoValue: number
   }
   investorSentiment: {
     bullish: number
     bearish: number
     neutral: number
-    timestamp: string
   }
 }
 
@@ -122,22 +117,22 @@ export function SentimentCards() {
           </div>
           <div className="flex items-baseline gap-2">
             <span className={`text-2xl font-bold ${getFearGreedColor(data.fearGreed.value)}`}>
-              {data.fearGreed.value}
+              {Math.round(data.fearGreed.value)}
             </span>
             <Badge variant="outline" className={`${getFearGreedColor(data.fearGreed.value)} border-current`}>
-              {getFearGreedLabel(data.fearGreed.value)}
+              {data.fearGreed.label || getFearGreedLabel(data.fearGreed.value)}
             </Badge>
           </div>
           <div className="mt-2">
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div 
                 className={`h-full transition-all ${
-                  data.fearGreed.value <= 25 ? 'bg-red-500' :
-                  data.fearGreed.value <= 45 ? 'bg-orange-500' :
-                  data.fearGreed.value <= 55 ? 'bg-yellow-500' :
-                  data.fearGreed.value <= 75 ? 'bg-lime-500' : 'bg-green-500'
+                  Math.round(data.fearGreed.value) <= 25 ? 'bg-red-500' :
+                  Math.round(data.fearGreed.value) <= 45 ? 'bg-orange-500' :
+                  Math.round(data.fearGreed.value) <= 55 ? 'bg-yellow-500' :
+                  Math.round(data.fearGreed.value) <= 75 ? 'bg-lime-500' : 'bg-green-500'
                 }`}
-                style={{ width: `${data.fearGreed.value}%` }}
+                style={{ width: `${Math.round(data.fearGreed.value)}%` }}
               />
             </div>
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
