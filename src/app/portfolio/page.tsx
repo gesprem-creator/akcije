@@ -651,13 +651,13 @@ export default function PortfolioPage() {
                           </div>
 
                           {searchQuery && filteredStocks.length > 0 && (
-                            <div className="space-y-3">
-                              <ScrollArea className="h-[180px] pr-4">
-                                <div className="space-y-2">
+                            <div className="space-y-2">
+                              <ScrollArea className="h-[140px] pr-4">
+                                <div className="space-y-1">
                                   {filteredStocks.map((stock) => (
                                     <div 
                                       key={stock.symbol}
-                                      className={`p-4 rounded-lg cursor-pointer transition-all ${
+                                      className={`p-3 rounded-lg cursor-pointer transition-all ${
                                         selectedStock?.symbol === stock.symbol 
                                           ? 'bg-primary/10 border border-primary/30' 
                                           : 'bg-muted/50 hover:bg-muted border border-transparent'
