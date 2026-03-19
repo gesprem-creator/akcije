@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Activity, TrendingUp, TrendingDown, Minus, Gauge, Users } from 'lucide-react'
+import { Activity, Gauge, Users } from 'lucide-react'
 
 interface SentimentData {
   vix: {
@@ -15,11 +15,7 @@ interface SentimentData {
     value: number
     label: string
   }
-  investorSentiment: {
-    bullish: number
-    bearish: number
-    neutral: number
-  }
+  investorSentiment: number // Single bullish percentage value
 }
 
 function getFearGreedColor(value: number): string {
@@ -150,29 +146,17 @@ export function SentimentCards() {
             <span className="text-xs text-muted-foreground">US Investor Sentiment</span>
             <Users className="w-4 h-4 text-blue-500" />
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1">
-                <TrendingUp className="w-3 h-3 text-green-500" />
-                <span className="text-xs">Bullish</span>
-              </div>
-              <span className="text-sm font-medium text-green-500">{data.investorSentiment.bullish.toFixed(1)}%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1">
-                <TrendingDown className="w-3 h-3 text-red-500" />
-                <span className="text-xs">Bearish</span>
-              </div>
-              <span className="text-sm font-medium text-red-500">{data.investorSentiment.bearish.toFixed(1)}%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1">
-                <Minus className="w-3 h-3 text-yellow-500" />
-                <span className="text-xs">Neutral</span>
-              </div>
-              <span className="text-sm font-medium text-yellow-500">{data.investorSentiment.neutral.toFixed(1)}%</span>
-            </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-blue-500">
+              {data.investorSentiment.toFixed(2)}%
+            </span>
+            <Badge variant="outline" className="text-green-500 border-green-500">
+              Bullish
+            </Badge>
           </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            AAII Weekly Survey
+          </p>
         </CardContent>
       </Card>
     </div>

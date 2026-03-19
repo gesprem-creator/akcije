@@ -10,11 +10,7 @@ interface SentimentData {
     value: number;
     label: string;
   };
-  investorSentiment: {
-    bullish: number;
-    bearish: number;
-    neutral: number;
-  };
+  investorSentiment: number; // Single bullish percentage value
 }
 
 // VIX data - fetch from Yahoo Finance
@@ -87,16 +83,12 @@ function getFearGreedLabel(value: number): string {
   return 'Extreme Greed';
 }
 
-// US Investor Sentiment - AAII survey data
-async function getInvestorSentiment(): Promise<{ bullish: number; bearish: number; neutral: number }> {
-  // Current AAII survey values (as of latest)
+// US Investor Sentiment - AAII survey data (Bullish percentage)
+async function getInvestorSentiment(): Promise<number> {
+  // Current AAII survey value (as of latest)
   // These are typically updated weekly on Thursday
   // Source: https://ycharts.com/indicators/us_investor_sentiment_bullish
-  return {
-    bullish: 31.9,  // 31.94% from YCharts
-    bearish: 34.8,  // Complement
-    neutral: 33.3   // Remaining
-  };
+  return 31.94;  // 31.94% bullish from YCharts
 }
 
 export async function GET() {
