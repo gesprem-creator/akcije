@@ -235,7 +235,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
   const recommendedStocks = useMemo(() => {
     return recommendations
       .filter(r => r.signal === 'STRONG_BUY' || r.signal === 'BUY')
-      .slice(0, 5)
+      .slice(0, 10)
       .map(r => allStocks.find(s => s.symbol === r.symbol))
       .filter(Boolean) as StockData[]
   }, [recommendations, allStocks])
