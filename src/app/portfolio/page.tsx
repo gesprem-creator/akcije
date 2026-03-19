@@ -652,7 +652,7 @@ export default function PortfolioPage() {
 
                           {searchQuery && filteredStocks.length > 0 && (
                             <div className="space-y-3">
-                              <ScrollArea className="h-[250px] pr-4">
+                              <ScrollArea className="h-[180px] pr-4">
                                 <div className="space-y-2">
                                   {filteredStocks.map((stock) => (
                                     <div 
@@ -685,7 +685,7 @@ export default function PortfolioPage() {
                               
                               {/* Chart Preview when stock selected */}
                               {selectedStock && (
-                                <div className="bg-card rounded-lg border border-border overflow-hidden h-[450px] w-[650px]">
+                                <div className="bg-card rounded-lg border border-border overflow-hidden h-[400px] w-[750px]">
                                   <iframe 
                                     key={selectedStock.symbol}
                                     src={`https://s.tradingview.com/embed-widget/symbol-overview/?symbols=${selectedStock.symbol}&interval=D&locale=en&colorTheme=dark&isTransparent=false&showSymbolLogo=true&displayMode=adaptive&width=100%25&height=100%25`}
