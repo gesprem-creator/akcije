@@ -22,14 +22,44 @@ interface SentimentData {
   };
 }
 
-// VIX data - known values based on market data
-function getVIXData(): { value: number; change: number; changePct: number } {
-  // VIX is typically around 12-25 in normal market conditions
-  // This would ideally come from a real-time data source
+// VIX data - fetch from Yahoo Finance or use current value
+async function getVIXData(): Promise<{ value: number; change: number; changePct: number }> {
+  try {
+    // Try to fetch VIX from Yahoo Finance
+    const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=1d', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      const result = data.chart?.result?.[0];
+      if (result) {
+        const meta = result.meta;
+        const quotes = result.indicators?.quote?.[0];
+        const closes = quotes?.close || [];
+        const currentPrice = meta?.regularMarketPrice || closes[closes.length - 1] || 25;
+        const previousClose = meta?.previousClose || currentPrice;
+        const change = currentPrice - previousClose;
+        const changePct = previousClose > 0 ? (change / previousClose) * 100 : 0;
+        
+        return {
+          value: Number(currentPrice.toFixed(2)),
+          change: Number(change.toFixed(2)),
+          changePct: Number(changePct.toFixed(2))
+        };
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching VIX:', error);
+  }
+  
+  // Fallback - current VIX value as of recent data
   return {
-    value: 16.45,
-    change: -0.32,
-    changePct: -1.91
+    value: 25.0,
+    change: 0,
+    changePct: 0
   };
 }
 
@@ -126,13 +156,14 @@ async function getInvestorSentiment(): Promise<{
 
 export async function GET() {
   try {
-    const [fearGreed, investorSentiment] = await Promise.all([
+    const [vix, fearGreed, investorSentiment] = await Promise.all([
+      getVIXData(),
       getFearGreedIndex(),
       getInvestorSentiment()
     ]);
     
     const sentimentData: SentimentData = {
-      vix: getVIXData(),
+      vix,
       fearGreed,
       investorSentiment
     };
