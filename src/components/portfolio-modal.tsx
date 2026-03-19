@@ -526,7 +526,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             </Button>
                           </div>
                         ) : (
-                          <div className="space-y-3">
+                          <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
                             {portfolio.holdings.map((holding) => {
                                 const { value, profit, profitPercent } = getHoldingValue(holding)
                                 const currentPrice = getCurrentPrice(holding.symbol)
@@ -626,7 +626,7 @@ export function PortfolioModal({ isOpen, onClose, allStocks, recommendations }: 
                             <p>Nema trenutnih preporuka</p>
                           </div>
                         ) : (
-                          <div className="space-y-2">
+                          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
                             {recommendedStocks.map((stock) => (
                               <div key={stock.symbol} className="p-2 rounded-lg bg-green-500/5 border border-green-500/20 flex items-center justify-between">
                                 <div className="flex items-center gap-2">
